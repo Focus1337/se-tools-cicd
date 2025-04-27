@@ -1,0 +1,12 @@
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\dotnet-web-api.exe
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\appsettings.Development.json
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\appsettings.json
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\dotnet-web-api.dll
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\dotnet-web-api.deps.json
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\dotnet-web-api.runtimeconfig.json
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\dotnet-web-api.pdb
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\Microsoft.OpenApi.dll
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Focus\Desktop\se-tools-cicd\dotnet-web-api\publish\Swashbuckle.AspNetCore.SwaggerUI.dll

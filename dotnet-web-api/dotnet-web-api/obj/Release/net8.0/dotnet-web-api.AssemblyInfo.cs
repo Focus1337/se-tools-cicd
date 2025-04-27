@@ -11,9 +11,9 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("dotnet-web-api")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+278f536130206ecdb03c236e14fb01006e6acba9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e57ec569addfc9f145ac1608df57032d0b14f4b8")]
 [assembly: System.Reflection.AssemblyProductAttribute("dotnet-web-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dotnet-web-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
