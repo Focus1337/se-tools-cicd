@@ -37,6 +37,6 @@ jobs:
           script: |
             cd /home/deploy
             tar -xzf app.tar.gz
-            sudo systemctl stop myapp.service  # Останавливаем предыдущую версию
-            sudo cp -r publish/* /var/www/myapp/
-            sudo systemctl start myapp.service
+            sudo systemctl stop setools-dz.service  # Останавливаем предыдущую версию
+            sudo cp -r publish/* /var/www/setools-dz/
+            sudo systemctl start setools-dz.service
