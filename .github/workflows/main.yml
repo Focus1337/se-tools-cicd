@@ -1,4 +1,4 @@
-name: Deploy to My Server
+name: Deploy to My Server (Self-contained)
 
 on:
   push:
@@ -13,9 +13,16 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-      - name: Publish App
+
+      - name: Publish Self-contained App
         run: |
-          dotnet publish -c Release -o ./publish
+          cd dotnet-web-api
+          dotnet publish -c Release -o ../publish \
+            --self-contained true \
+            -r linux-x64 \
+            /p:PublishSingleFile=true \
+            /p:PublishTrimmed=true
+          cd ..
           tar -czvf app.tar.gz ./publish
 
       - name: Deploy via SSH
@@ -28,15 +35,55 @@ jobs:
           source: "app.tar.gz"
           target: "/home/deploy"
 
-      - name: Run on Server
+      - name: Deploy and Start
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # 1. Останавливаем старый сервис
+            sudo systemctl stop setools-dz.service || true
+            
+            # 2. Чистим и распаковываем в /home/deploy
             cd /home/deploy
+            rm -rf publish
             tar -xzf app.tar.gz
-            sudo systemctl stop setools-dz.service  # Останавливаем предыдущую версию
-            sudo cp -r publish/* /var/www/setools-dz/
-            sudo systemctl start setools-dz.service
+            rm -f app.tar.gz
+            
+            # 3. Проверяем бинарник
+            if [ ! -f "/home/deploy/publish/dotnet-web-api" ]; then
+              echo "Файл dotnet-web-api не найден!"
+              ls -la /home/deploy/publish/
+              exit 1
+            fi
+            
+            # 4. Настраиваем сервис (ключевое исправление)
+            sudo bash -c 'cat > /etc/systemd/system/setools-dz.service <<EOF
+            [Unit]
+            Description=My .NET App
+            After=network.target
+            StartLimitIntervalSec=0
+            
+            [Service]
+            Type=exec
+            WorkingDirectory=/home/deploy/publish
+            ExecStart=/home/deploy/publish/dotnet-web-api --urls "http://0.0.0.0:5251"
+            Restart=always
+            RestartSec=1
+            User=${USER}
+            Environment=ASPNETCORE_ENVIRONMENT=Production
+            
+            [Install]
+            WantedBy=multi-user.target
+            EOF'
+            
+            # 5. Права и запуск
+            chmod +x /home/deploy/publish/dotnet-web-api
+            sudo systemctl daemon-reload
+            sudo systemctl enable --now setools-dz.service
+            
+            # 6. Ждём и проверяем
+            sleep 5
+            sudo systemctl status setools-dz.service --no-pager
+            curl -fsS http://localhost:5251/ping || (sudo journalctl -u setools-dz.service -n 20; exit 1)
